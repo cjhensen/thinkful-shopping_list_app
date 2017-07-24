@@ -15,6 +15,7 @@ const ITEM_CHECKED_CLASS_NAME = "shopping-item__checked";
 const ITEM_INDEX_ATTRIBUTE = "data-item-index";
 const ITEM_INDEX_ELEMENT_IDENTIFIER = "js-item-index-element";
 const ITEM_CHECKED_BUTTON_IDENTIFIER = "js-item-toggle";
+const ITEM_DELETE_BUTTON_IDENTIFIER = "js-item-delete";
 
 const NEW_ITEM_FORM_IDENTIFIER = '#js-shopping-list-form';
 
@@ -26,7 +27,7 @@ function generateItemElement(item, itemIndex, template) {
         <button class="shopping-item-toggle ${ITEM_CHECKED_BUTTON_IDENTIFIER}">
             <span class="button-label">check</span>
         </button>
-        <button class="shopping-item-delete js-item-delete">
+        <button class="shopping-item-delete ${ITEM_DELETE_BUTTON_IDENTIFIER}">
             <span class="button-label">delete</span>
         </button>
       </div>
@@ -91,7 +92,18 @@ function handleItemCheckClicked() {
   });
 }
 
+function removeItemFromList(itemIndex) {
+  listData.splice(itemIndex, 1);
+}
+
 function handleDeleteItemClicked() {
+  // Listen for when user wants to delete item
+  // delete it
+  $(SHOPPING_LIST_ELEMENT_CLASS).on('click', `.${ITEM_DELETE_BUTTON_IDENTIFIER}`, function(event) {
+    const itemIndex = getItemIndexFromElement(event.currentTarget);
+    removeItemFromList(itemIndex);
+    renderShoppingList();
+  });
   console.log('handleDeleteItemClicked ran');
 }
 
